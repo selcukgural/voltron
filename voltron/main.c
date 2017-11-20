@@ -60,7 +60,7 @@ int main() {
 
 ////str_trim
 	char chrs1[1] = { 'r' };
-	assert_equal_str(str_trim("rehber", chrs1, sizeof(*chrs1)), "ehbe", __LINE__);
+	assert_equal_str(str_trim("rehber", chrs1,1), "ehbe", __LINE__);
 	
 	char chrs2[3] = { 'a','r','n' };
 	assert_equal_str(str_trim("nasil gidiyor", chrs2, 3), "sil gidiyo", __LINE__);

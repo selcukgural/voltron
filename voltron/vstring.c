@@ -15,8 +15,8 @@ int str_startswith(const char* source, const char* search_value, const int ignor
 {
 	if (source == NULL || search_value == NULL) return  -1;
 
-	const unsigned source_len = strlen(source);
-	const unsigned search_len = strlen(search_value);
+	const size_t source_len = strlen(source);
+	const size_t search_len = strlen(search_value);
 
 	if (search_len > source_len || search_len == 0 && source_len > 0) {
 		return -1;
@@ -49,8 +49,8 @@ int str_endswith(const char* source, const char* search_value, const int ignore_
 {
 	if (source == NULL || search_value == NULL) return  -1;
 
-	const unsigned source_len = strlen(source);
-	const unsigned search_len = strlen(search_value);
+	const size_t source_len = strlen(source);
+	const size_t search_len = strlen(search_value);
 
 	if (search_len > source_len || search_len == 0 && source_len > 0) {
 		return -1;
@@ -83,10 +83,10 @@ char*  str_padleft(const char *source,const unsigned int totalwidth, const char 
 {
 	if (source == NULL || totalwidth <= 0) return NULL;
 
-	const unsigned int source_len = strlen(source);
+	const size_t source_len = strlen(source);
 	if (source_len >= totalwidth) return NULL;
 
-	const unsigned int size = totalwidth - source_len;
+	const size_t size = totalwidth - source_len;
 	char *strn =  (char*)malloc(source_len + size + 1);
 	if(!strn) return NULL;
 
@@ -109,10 +109,10 @@ char * str_padright(const char * source, const unsigned int totalwidth, const ch
 {
 	if (source == NULL) return NULL;
 
-	const unsigned int source_len = strlen(source);
+	const size_t source_len = strlen(source);
 	if (source_len >= totalwidth) return NULL;
 
-	const unsigned int size = totalwidth - source_len;
+	const size_t size = totalwidth - source_len;
 	char *strn = (char*)malloc(source_len + size + 1);
 	if (!strn) return NULL;
 
@@ -122,7 +122,7 @@ char * str_padright(const char * source, const unsigned int totalwidth, const ch
 	{
 		strn[k] = source[k];
 	}
-	const unsigned int tempk = k;
+	const size_t tempk = k;
 	k = 0;
 	for (; k < size; ++k)
 	{
@@ -136,8 +136,8 @@ char * str_insert(const char * source, const char * insert_value, const unsigned
 {
 	if (source == NULL || insert_value == NULL) return NULL;
 
-	const unsigned int source_len = strlen(source);
-	const unsigned int insert_len = strlen(insert_value);
+	const size_t source_len = strlen(source);
+	const size_t insert_len = strlen(insert_value);
 
 	char *nstr = (char*)malloc(source_len + insert_len + 1);
 	if (!nstr) return  NULL;
@@ -150,15 +150,26 @@ char * str_insert(const char * source, const char * insert_value, const unsigned
 
 char * str_remove(const char * source, const unsigned int start, const unsigned int count)
 {
-	char *nstr = (char*)malloc((strlen(source) - count) + 1);
+	const size_t source_len = strlen(source);
+	char *nstr = (char*)malloc((source_len - count) + 1);
 	unsigned int tstart = start;
-	while(tstart--)
+	
+	size_t k = 0;
+	for(; k < tstart; ++k)
 	{
-		*nstr++ = *source++;
+		nstr[k] = source[k];
 	}
-
-
-
+	if (strlen(source) == start + count)
+	{
+		nstr[k] = '\0';
+		return nstr;
+	}
+	unsigned int stemp = start + count;
+	for(;tstart < source_len; ++tstart)
+	{
+		nstr[tstart] = source[stemp++];
+	}
+	nstr[tstart] = '\0';
 	return  nstr;
 	
 }

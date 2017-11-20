@@ -23,13 +23,13 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.c">
+    <ClCompile Include="vassert.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="vstring.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="vassert.c">
+    <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

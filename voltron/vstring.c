@@ -37,7 +37,6 @@ int str_startswith(const char* source, const char* search_value, const int ignor
 	}	
 	return 0;
 }
-
 /*
 * @param		{const char*}	source			üzerinde arama yapılacak karaketer dizisi
 * @param		{const char*}	search_value	source içerisinde arama yapılacak olan karakterler dizisi
@@ -87,16 +86,15 @@ char*  str_padleft(const char *source,const unsigned int totalwidth, const char 
 	if (source_len >= totalwidth) return NULL;
 
 	const size_t size = totalwidth - source_len;
-	char *strn =  (char*)malloc(source_len + size + 1);
-	if(!strn) return NULL;
+	char *nstr =  (char*)malloc(source_len + size + 1);
+	if(!nstr) return NULL;
 
 	size_t k = 0;
 	for(k = 0; k < size; ++k)
-	{
-		strn[k] = pdchr;
-	}
-	strn[k] = '\0';
-	return strcat(strn, source);
+		nstr[k] = pdchr;
+
+	nstr[k] = '\0';
+	return strcat(nstr, source);
 }
 /*
 * @param			{const char*}	source			sol tarafına ekleme yapılacak olan karekterler dizisi
@@ -113,25 +111,30 @@ char * str_padright(const char * source, const unsigned int totalwidth, const ch
 	if (source_len >= totalwidth) return NULL;
 
 	const size_t size = totalwidth - source_len;
-	char *strn = (char*)malloc(source_len + size + 1);
-	if (!strn) return NULL;
+	char *nstr = (char*)malloc(source_len + size + 1);
+	if (!nstr) return NULL;
 
 	size_t k = 0;
 
 	for (; k < source_len; ++k)
-	{
-		strn[k] = source[k];
-	}
+		nstr[k] = source[k];
+
 	const size_t tempk = k;
 	k = 0;
-	for (; k < size; ++k)
-	{
-		strn[tempk + k] = pdchr;
-	}
-	strn[tempk + k] = '\0';
-	return  strn;
-}
 
+	for (; k < size; ++k)
+		nstr[tempk + k] = pdchr;
+
+	nstr[tempk + k] = '\0';
+	return  nstr;
+}
+/*
+ * @param			{const char * source}			source			kaynak char dizisi
+ * @param			{const char * insert_value}		insert_value	kaynak char dizisine eklenecek olan char dizisi
+ * @param			{const unsigned int startpos}	startpos		eklemenin yapılacağı başlangıç pozisyonu
+ * @description		startpos parametresi ile gönderilen pozisyondan başlayarak insert_value ilen gelen char dizisini ekler.
+ * @returns			Başarılı olması durumunda yeni bir char dizisi adresi aksi durumda NULL pointer.
+ */
 char * str_insert(const char * source, const char * insert_value, const unsigned int startpos)
 {
 	if (source == NULL || insert_value == NULL) return NULL;
@@ -147,14 +150,24 @@ char * str_insert(const char * source, const char * insert_value, const unsigned
 	strcat(nstr, insert_value);
 	return strcat(nstr, source + startpos);
 }
-
+/*
+ * @param			{const char * source}		source		kaynak char dizisi
+ * @param			{const unsigned int start}	start		silinmeye başlanacak pozisyon
+ * @param			{const unsigned int count}	count		silinecek karakter sayısı
+ * @description		kaynak char dizisi içerisinde belirtilen uzunlukta karakter siler.
+ * @returns			Başarılı olması durumunda yeni bir char dizisi adresi aksi durumda NULL pointer.
+ */
 char * str_remove(const char * source, const unsigned int start, const unsigned int count)
 {
+	if (source == NULL) return NULL;
+
 	const size_t source_len = strlen(source);
-	char *nstr = (char*)malloc((source_len - count) + 1);
+	char *nstr = (char*)malloc(source_len - count + 1);
+	if (!nstr) return  NULL;
+
 	const unsigned int tstart = start;
 	
-	strncpy(nstr,source,start);
+	strcpy(nstr,source);
 	nstr[start] = '\0';
 	if (strlen(source) == start + count)
 	{
@@ -163,7 +176,66 @@ char * str_remove(const char * source, const unsigned int start, const unsigned 
 	
 	strcat(&nstr[start], &source[start + count]);
 	nstr[source_len - count] = '\0';
+	return nstr;	
+}
+/*
+ * @param			{const char* source}		source		kaynak char dizisi
+ * @param			{const char find_chr}		find_chr	kaynak char dizisi içerisinde arama yapılacak olan karakter
+ * @param			{const char rep_chr}		rep_chr		find_chr karakteri ile eşleşen karakterlerin yerine yazılacak karakter
+ * @description		kaynak char dizisi içerinde aranan karakterleri bulup yerlerine rep_chr ile gönderilen karaketeri yazar.
+ * @returns			Başarılı olması durumunda yeni bir char dizisi adresi aksi durumda NULL pointer. 
+ */
+char* str_replace(const char* source, const char find_chr, const char rep_chr)
+{
+	if (source == NULL) return NULL;
+
+	const size_t source_len = strlen(source);
+	char *nstr = (char*)malloc(source_len);
+	if (!nstr) return  NULL;
+
+	strcpy(nstr, source);
+
+	for(size_t k = 0; k < nstr[k] != '\0';++k)
+		if (nstr[k] == find_chr) 
+			nstr[k] = rep_chr;
+
 	return nstr;
+}
+
+char* str_trim(const char* source, const char *trimchrs, const size_t size)
+{
+	const size_t source_len = strlen(source);
+	size_t start = 0, end = source_len - 1;
 	
+	for (; start < source_len; ++start)
+	{
+		size_t i = 0;
+		const char chr = source[start];
+
+		for (i = 0; i < size; ++i)
+			if (trimchrs[i] == chr) break;
+
+		if (i == size) break;
+	}
+	for (; end >= start; --end)
+	{
+		size_t i = 0;
+		const char chr = source[end];
+
+		for (i = 0; i < size; ++i)
+			if (trimchrs[i] == chr) break;
+
+		if (i == size) break;
+	}
+
+	const size_t nlen = end - start + 1;
+	if (nlen == source_len) return (char*)source;
+
+	char *nstr = (char*)malloc(nlen);
+	if (!nstr) return  NULL;
+
+	strncpy(nstr, source + start, nlen);
+	nstr[nlen] = '\0';
+	return  nstr;
 }
 

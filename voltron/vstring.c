@@ -152,25 +152,18 @@ char * str_remove(const char * source, const unsigned int start, const unsigned 
 {
 	const size_t source_len = strlen(source);
 	char *nstr = (char*)malloc((source_len - count) + 1);
-	unsigned int tstart = start;
+	const unsigned int tstart = start;
 	
-	size_t k = 0;
-	for(; k < tstart; ++k)
-	{
-		nstr[k] = source[k];
-	}
+	strncpy(nstr,source,start);
+	nstr[start] = '\0';
 	if (strlen(source) == start + count)
 	{
-		nstr[k] = '\0';
 		return nstr;
 	}
-	unsigned int stemp = start + count;
-	for(;tstart < source_len; ++tstart)
-	{
-		nstr[tstart] = source[stemp++];
-	}
-	nstr[tstart] = '\0';
-	return  nstr;
+	
+	strcat(&nstr[start], &source[start + count]);
+	nstr[source_len - count] = '\0';
+	return nstr;
 	
 }
 

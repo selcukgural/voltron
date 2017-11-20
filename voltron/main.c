@@ -38,6 +38,7 @@ int main() {
 	equal_str(str_remove("nbrsin", 3, 3), "nbr", __LINE__);
 	equal_str(str_remove("hava nasil oralarda", 14, 3), "hava nasil orada", __LINE__);
 	equal_str(str_remove("hav hav", 0, 4), "hav", __LINE__);
+	equal_str(str_remove("hav hav", 0, 4), "hav", __LINE__);
 
 	system("pause");
 	return 0;

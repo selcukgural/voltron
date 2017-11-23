@@ -1,4 +1,4 @@
-#pragma  warning(disable:4996)
+﻿#pragma  warning(disable:4996)
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -58,21 +58,62 @@ int main() {
 	//assert_equal_str(str_replace("vallah", 'v', 'y'), "yallah", __LINE__);
 ////end str_replace
 
+
 ////str_trim
-	char chrs1[1] = { 'r' };
-	assert_equal_str(str_trim("rehber", chrs1,1), "ehbe", __LINE__);
-	
-	char chrs2[3] = { 'a','r','n' };
-	assert_equal_str(str_trim("nasil gidiyor", chrs2, 3), "sil gidiyo", __LINE__);
+	/*
+	//char chrs1[1] = { 'r' };
+	//assert_equal_str(str_trim("rehber", chrs1,1), "ehbe", __LINE__);
+	//
+	//char chrs2[3] = { 'a','r','n' };
+	//assert_equal_str(str_trim("nasil gidiyor", chrs2, 3), "sil gidiyo", __LINE__);
 
-	char chrs3[1] = { ' '};
-	assert_equal_str(str_trim("    hava da tam kar havasi ha!      ", chrs3, 1), "hava da tam kar havasi ha!", __LINE__);
+	//char chrs3[1] = { ' '};
+	//assert_equal_str(str_trim("    hava da tam kar havasi ha!      ", chrs3, 1), "hava da tam kar havasi ha!", __LINE__);
 
 
-	char chrs4[4] = { 'a',' ','c','g' };
-	assert_equal_str(str_trim("    a bcdef   g   a", chrs4, 4), "bcdef", __LINE__);
+	//char chrs4[4] = { 'a',' ','c','g' };
+	//assert_equal_str(str_trim("    a bcdef   g   a", chrs4, 4), "bcdef", __LINE__);
+*/
 ////end str_trim
 
+////str_trimtstart
+	/*
+	char chrs1[1] = { 'n' };
+	assert_equal_str(str_trimstart("nasil gidiyor", chrs1, 1), "asil gidiyor", __LINE__);
+
+	char chrs2[4] = { ' ','c','k','o' };
+	assert_equal_str(str_trimstart("cok yorgunum beni bekleme kaptan!", chrs2, 4), "yorgunum beni bekleme kaptan!", __LINE__);
+
+	char chrs3[1] = { ' '};
+	assert_equal_str(str_trimstart(" bir sevmek bin defa olmekmis!", chrs3, 1), "bir sevmek bin defa olmekmis!", __LINE__);
+
+	char chrs4[4] = { '*',' ','?','/' };
+	assert_equal_str(str_trimstart("? / *gecenin ucunde ? *", chrs4, 4), "gecenin ucunde ? *", __LINE__);
+
+	char chrs5[1] = { '.'};
+	assert_equal_str(str_trimstart("...gitmemesi gerekiyordu.", chrs5, 1), "gitmemesi gerekiyordu.", __LINE__);
+	*/
+////end str_trimstart
+
+
+////str_trimend
+	/*
+	char chrs1[1] = { 'r' };
+	assert_equal_str(str_trimend("nasil gidiyor", chrs1, 1), "nasil gidiyo", __LINE__);
+
+	char chrs2[] = { '!',' ' };
+	assert_equal_str(str_trimend("onumden cekilirsen istanbul gorunecek  !  ", chrs2, 2), "onumden cekilirsen istanbul gorunecek", __LINE__);
+
+	char chrs3[] = {  '~',' ' };
+	assert_equal_str(str_trimend("master of the wind ~", chrs3, 2), "master of the wind", __LINE__);
+
+	char chrs4[] = { '.'};
+	assert_equal_str(str_trimend("...ustalastik biraz daha tasi kirmakta, dostu dusmani ayirmakta...", chrs4, 1), "...ustalastik biraz daha tasi kirmakta, dostu dusmani ayirmakta", __LINE__);
+
+	char chrs5[] = { 'h','e','p','.' ,' '};
+	assert_equal_str(str_trimend("bir hisimla geldi gecti peh peh peh...", chrs5, 5), "bir hisimla geldi gecti", __LINE__);
+	*/
+////end str_trimend
 	system("pause");
 	return 0;
 }

@@ -129,7 +129,7 @@ char * str_padright(const char * source, const unsigned int totalwidth, const ch
 	return  nstr;
 }
 /*
- * @param			{const char * source}			source			kaynak char dizisi
+ * @param			{const char * source}			source			kaynak char dizi adresi
  * @param			{const char * insert_value}		insert_value	kaynak char dizisine eklenecek olan char dizisi
  * @param			{const unsigned int startpos}	startpos		eklemenin yapılacağı başlangıç pozisyonu
  * @description		startpos parametresi ile gönderilen pozisyondan başlayarak insert_value ilen gelen char dizisini ekler.
@@ -151,7 +151,7 @@ char * str_insert(const char * source, const char * insert_value, const unsigned
 	return strcat(nstr, source + startpos);
 }
 /*
- * @param			{const char * source}		source		kaynak char dizisi
+ * @param			{const char * source}		source		kaynak char dizi adresi
  * @param			{const unsigned int start}	start		silinmeye başlanacak pozisyon
  * @param			{const unsigned int count}	count		silinecek karakter sayısı
  * @description		kaynak char dizisi içerisinde belirtilen uzunlukta karakter siler.
@@ -179,7 +179,7 @@ char * str_remove(const char * source, const unsigned int start, const unsigned 
 	return nstr;	
 }
 /*
- * @param			{const char* source}		source		kaynak char dizisi
+ * @param			{const char* source}		source		kaynak char dizi adresi
  * @param			{const char find_chr}		find_chr	kaynak char dizisi içerisinde arama yapılacak olan karakter
  * @param			{const char rep_chr}		rep_chr		find_chr karakteri ile eşleşen karakterlerin yerine yazılacak karakter
  * @description		kaynak char dizisi içerinde aranan karakterleri bulup yerlerine rep_chr ile gönderilen karaketeri yazar.
@@ -201,7 +201,14 @@ char* str_replace(const char* source, const char find_chr, const char rep_chr)
 
 	return nstr;
 }
-
+/*
+ * @param		{const char* source}			source		arama yapılacak kaynak char dizi adresi
+ * @param		{const char *trimchrs}			trimchrs	source içerisinde aranacak olan karakterler dizisi adresi
+ * @param		{const size_t size}				size		trimchrs parametresi ile gelen karakter dizisinin uzunluğu
+ * @description	source kaynak dizisinin başında ve sonunda trimchrs ile gönderilen karakterleri arar ve bulunan karakterlerin olmadığı yeni bir char dizisi adresi geriye döner.
+ * trimchrs ile silinmesi istenilen karakterler source dizisinin başında ve sonunda yoksa source dizisinin adresini döner.
+ * @returns		yeni bir char dizisi adresi
+ */
 char* str_trim(const char* source, const char *trimchrs, const size_t size)
 {
 	const size_t source_len = strlen(source);
@@ -236,6 +243,69 @@ char* str_trim(const char* source, const char *trimchrs, const size_t size)
 
 	strncpy(nstr, source + start, nlen);
 	nstr[nlen] = '\0';
+	return  nstr;
+}
+/*
+* @param		{const char* source}			source		arama yapılacak kaynak char dizi adresi
+* @param		{const char *trimchrs}			trimchrs	source içerisinde aranacak olan karakterler dizisi adresi
+* @param		{const size_t size}				size		trimchrs parametresi ile gelen karakter dizisinin uzunluğu
+* @description	source kaynak dizisinin başında trimchrs ile gönderilen karakterleri arar ve bulunan karakterlerin olmadığı yeni bir char dizisi adresi geriye döner.
+* trimchrs ile silinmesi istenilen karakterler source dizisinin başında yoksa source dizisinin adresini döner.
+* @returns		yeni bir char dizisi adresi
+*/
+char* str_trimstart(const char* source, const char* trimchrs, const size_t size)
+{
+	const size_t source_len = strlen(source);
+	size_t start = 0;
+	for(;start < source_len;++start)
+	{
+		size_t i = 0;
+		const char chr = source[start];
+
+		for (i = 0; i < size; ++i)
+			if (trimchrs[i] == chr) break;
+
+		if (i == size) break;
+	}
+	const size_t nlen = source_len - start;
+	if (nlen == source_len) return (char*)source;
+
+	char *nstr = (char*)malloc(nlen);
+	if (!nstr) return  NULL;
+
+	strncpy(nstr, source + start, nlen);
+	nstr[nlen] = '\0';
+	return  nstr;
+}
+/*
+* @param		{const char* source}			source		arama yapılacak kaynak char dizi adresi
+* @param		{const char *trimchrs}			trimchrs	source içerisinde aranacak olan karakterler dizisi adresi
+* @param		{const size_t size}				size		trimchrs parametresi ile gelen karakter dizisinin uzunluğu
+* @description	source kaynak dizisinin sonunda trimchrs ile gönderilen karakterleri arar ve bulunan karakterlerin olmadığı yeni bir char dizisi adresi geriye döner.
+* trimchrs ile silinmesi istenilen karakterler source dizisinin soununda yoksa source dizisinin adresini döner.
+* @returns		yeni bir char dizisi adresi
+*/
+char* str_trimend(const char* source, const char* trimchrs, const size_t size)
+{
+	const size_t source_len = strlen(source);
+	size_t end = source_len;
+	for (; end  != 0; --end)
+	{
+		size_t i = 0;
+		const char chr = source[end - 1];
+
+		for (i = 0; i < size; ++i)
+			if (trimchrs[i] == chr) break;
+
+		if (i == size) break;
+	}
+	if (end == source_len) return (char*)source;
+
+	char *nstr = (char*)malloc(end + 1);
+	if (!nstr) return  NULL;
+
+	strncpy(nstr, source, end +1);
+	nstr[end] = '\0';
 	return  nstr;
 }
 

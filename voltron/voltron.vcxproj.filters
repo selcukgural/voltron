@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\tests">
+      <UniqueIdentifier>{2230c276-66b0-4c0a-a539-a8e72850fd4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vassert.h">
@@ -20,6 +23,9 @@
     </ClInclude>
     <ClInclude Include="vstring.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="str_test.h">
+      <Filter>Source Files\tests</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -31,6 +37,9 @@
     </ClCompile>
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="str_test.c">
+      <Filter>Source Files\tests</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -13,7 +13,8 @@ static void str_trim_test(void);
 static void str_trimstart_test(void);
 static void str_trimend_test(void);
 static void str_substring_test(void);
-
+static void str_tolower_test(void);
+static void str_toupper_test(void);
 
 void str_run_tests(void)
 {
@@ -28,6 +29,8 @@ void str_run_tests(void)
 	str_remove_test();
 	str_replace_test();
 	str_substring_test();
+	str_tolower_test();
+	str_toupper_test();
 }
 
 
@@ -149,4 +152,20 @@ void str_substring_test(void)
 	assert_equal_str(str_substring("Yapraklarim suda balik gibi kivil kivil", 12, 15), "suda balik gibi", __LINE__);
 	assert_equal_str(str_substring("amacim kimseyi kirmak degildi, yanlis anlasildim!", 31, 0), "yanlis anlasildim!", __LINE__);
 	assert_equal_str(str_substring("drama koprusu", 0, 2), "dr", __LINE__);
+}
+
+void str_tolower_test(void)
+{
+	assert_equal_str(str_tolower("SELAMLAR"), "selamlar", __LINE__);
+	assert_equal_str(str_tolower("HAYAT baYRam Olsa"), "hayat bayram olsa", __LINE__);
+	assert_equal_str(str_tolower("olmadi ama"), "olmadi ama", __LINE__);
+}
+
+void str_toupper_test(void)
+{
+	assert_equal_str(str_toupper("baris manco"), "BARIS MANCO", __LINE__);
+	assert_equal_str(str_toupper("dunyada biraz huzur herseye bedel...ilac neye yarar vade gelmisse eger"), "DUNYADA BIRAZ HUZUR HERSEYE BEDEL...ILAC NEYE YARAR VADE GELMISSE EGER", __LINE__);
+	assert_equal_str(str_toupper("sELaMlaR"), "SELAMLAR", __LINE__);
+
+
 }

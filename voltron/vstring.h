@@ -14,5 +14,7 @@ char *str_trim(const char *source, const char *trimchrs, const size_t size);
 char *str_trimstart(const char *source, const char *trimchrs, const size_t size);
 char *str_trimend(const char *source, const char *trimchrs, const size_t size);
 char *str_substring(const char *source, const int start_index, const int length);
+char *str_toupper(const char *source);
+char *str_tolower(const char *source);
 
 #endif

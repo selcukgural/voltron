@@ -308,4 +308,23 @@ char* str_trimend(const char* source, const char* trimchrs, const size_t size)
 	nstr[end] = '\0';
 	return  nstr;
 }
+/*
+ * @param		{const char *source}		source			kaynak char dizi adresi
+ * @param		{const int start_index}		start_index		bölünmeye başlanacak indis numarası
+ * @param		{length}					length			bölünecek char dizisinin uzunluğu
+ * @description	source ile adresini gösterdiği char dizisinde start_index' e denk gelen indisinden length ile belirtilen uzunluk kadar char alınır length 0 ise start_index' ten başlayarak
+ * geriye kalan tüm karakterler eklenir.
+ * @returns		yeni bir char dizisi adresi. istenilen uzunluk değerleri source ile gelen değerin uzunluğundan büyükse veya eşitse source' un kendi adresi 
+ */
+char * str_substring(const char *source, const int start_index, const int length)
+{
+	const size_t source_len = strlen(source);
+	if(source_len < start_index + length) return (char*)source;
+	const size_t size = length == 0 ? (source_len - start_index) : length;
+	if (size == source_len) return (char*)source;
+	char *nstr = (char*)malloc(size);
+	strncpy(nstr, &source[start_index], size);
+	nstr[size] = '\0';
+	return  nstr;
+}
 

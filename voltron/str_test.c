@@ -12,6 +12,8 @@ static void str_replace_test(void);
 static void str_trim_test(void);
 static void str_trimstart_test(void);
 static void str_trimend_test(void);
+static void str_substring_test(void);
+
 
 void str_run_tests(void)
 {
@@ -25,11 +27,12 @@ void str_run_tests(void)
 	str_insert_test();
 	str_remove_test();
 	str_replace_test();
+	str_substring_test();
 }
 
 
 
-void str_endswith_test()
+void str_endswith_test(void)
 {
 	assert_equal_int(str_endswith("selamlar nasilsin nasil gidiyoR", "GiDiYOr", 1), -1, __LINE__);
 	assert_equal_int(str_endswith("selamlar nasilsin nasil gidiyoR", "GiDiYOr", 0), 0, __LINE__);
@@ -50,7 +53,7 @@ void str_startswith_test(void)
 	assert_equal_int(str_startswith("  ", "", 0), -1, __LINE__);
 }
 
-void str_padright_test()
+void str_padright_test(void)
 {
 	assert_equal_str(str_padright("11", 4, '0'), "1100", __LINE__);
 	assert_equal_str(str_padright("Turkiy", 7, 'e'), "Turkiye", __LINE__);
@@ -138,4 +141,12 @@ void str_trimend_test(void)
 	char chrs5[] = { 'h','e','p','.' ,' ' };
 	assert_equal_str(str_trimend("bir hisimla geldi gecti peh peh peh...", chrs5, 5), "bir hisimla geldi gecti", __LINE__);
 	
+}
+
+void str_substring_test(void)
+{
+	assert_equal_str(str_substring("anacim",0,3), "ana", __LINE__);
+	assert_equal_str(str_substring("Yapraklarim suda balik gibi kivil kivil", 12, 15), "suda balik gibi", __LINE__);
+	assert_equal_str(str_substring("amacim kimseyi kirmak degildi, yanlis anlasildim!", 31, 0), "yanlis anlasildim!", __LINE__);
+	assert_equal_str(str_substring("drama koprusu", 0, 2), "dr", __LINE__);
 }

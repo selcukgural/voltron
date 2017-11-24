@@ -10,8 +10,9 @@ char *str_padright(const char *source, const unsigned int totalwidth, const char
 char *str_insert(const char *source, const char *insert_value, const unsigned int startpos);
 char *str_remove(const char *source, const unsigned int start, const unsigned int count);
 char *str_replace(const char *source, const char chr, const char rep_chr);
-char *str_trim(const char* source, const char *trimchrs, const size_t size);
-char *str_trimstart(const char* source, const char *trimchrs, const size_t size);
-char *str_trimend(const char* source, const char *trimchrs, const size_t size);
+char *str_trim(const char *source, const char *trimchrs, const size_t size);
+char *str_trimstart(const char *source, const char *trimchrs, const size_t size);
+char *str_trimend(const char *source, const char *trimchrs, const size_t size);
+char *str_substring(const char *source, const int start_index, const int length);
 
 #endif

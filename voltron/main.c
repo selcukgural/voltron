@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "str_test.h"
+#include "vstring.h"
 
 
 int main() {

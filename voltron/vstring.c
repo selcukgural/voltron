@@ -21,8 +21,6 @@ static char *toupper_or_tolower(const char *source, const enum str_tolower_or_to
 */
 int str_startswith(const char* source, const char* search_value, const int ignore_case)
 {
-	if (source == NULL || search_value == NULL) return  -1;
-
 	const size_t source_len = strlen(source);
 	const size_t search_len = strlen(search_value);
 
@@ -54,8 +52,6 @@ int str_startswith(const char* source, const char* search_value, const int ignor
 */
 int str_endswith(const char* source, const char* search_value, const int ignore_case)
 {
-	if (source == NULL || search_value == NULL) return  -1;
-
 	const size_t source_len = strlen(source);
 	const size_t search_len = strlen(search_value);
 
@@ -88,14 +84,12 @@ int str_endswith(const char* source, const char* search_value, const int ignore_
  */
 char *str_padleft(const char *source,const unsigned int totalwidth, const char pdchr)
 {
-	if (source == NULL || totalwidth <= 0) return NULL;
-
 	const size_t source_len = strlen(source);
 	if (source_len >= totalwidth) return NULL;
 
 	const size_t size = totalwidth - source_len;
-	char *nstr =  (char*)malloc(source_len + size + 1);
-	if(!nstr) return NULL;
+	char *nstr; 
+	if((nstr = (char*)malloc(source_len + size + 1))==NULL) return NULL;
 
 	size_t k = 0;
 	for(k = 0; k < size; ++k)
@@ -113,14 +107,13 @@ char *str_padleft(const char *source,const unsigned int totalwidth, const char p
 */
 char *str_padright(const char * source, const unsigned int totalwidth, const char pdchr)
 {
-	if (source == NULL) return NULL;
 
 	const size_t source_len = strlen(source);
 	if (source_len >= totalwidth) return NULL;
 
 	const size_t size = totalwidth - source_len;
-	char *nstr = (char*)malloc(source_len + size + 1);
-	if (!nstr) return NULL;
+	char *nstr;
+	if ((nstr = (char*)malloc(source_len + size + 1)) == NULL) return NULL;
 
 	size_t k = 0;
 
@@ -145,15 +138,13 @@ char *str_padright(const char * source, const unsigned int totalwidth, const cha
  */
 char *str_insert(const char * source, const char * insert_value, const unsigned int startpos)
 {
-	if (source == NULL || insert_value == NULL) return NULL;
-
 	const size_t source_len = strlen(source);
 	const size_t insert_len = strlen(insert_value);
 
-	char *nstr = (char*)malloc(source_len + insert_len + 1);
-	if (!nstr) return  NULL;
+	char *nstr;
+	if((nstr = (char*)malloc(source_len + insert_len + 1))==NULL) return  NULL;
 
-	strncpy(nstr, source, startpos);
+	memcpy(nstr, source, startpos);
 	nstr[startpos] = '\0';
 	strcat(nstr, insert_value);
 	return strcat(nstr, source + startpos);
@@ -167,24 +158,19 @@ char *str_insert(const char * source, const char * insert_value, const unsigned 
  */
 char *str_remove(const char * source, const unsigned int start, const unsigned int count)
 {
-	if (source == NULL) return NULL;
-
 	const size_t source_len = strlen(source);
-	char *nstr = (char*)malloc(source_len - count + 1);
-	if (!nstr) return  NULL;
+	char *nstr;
+	if ((nstr = (char*)malloc(source_len - count + 1)) == NULL) return  NULL;
 
 	const unsigned int tstart = start;
-	
-	strcpy(nstr,source);
+
+	memcpy(nstr, source,source_len + 1);
 	nstr[start] = '\0';
-	if (strlen(source) == start + count)
-	{
-		return nstr;
-	}
-	
+	if (strlen(source) == start + count) return nstr;
+
 	strcat(&nstr[start], &source[start + count]);
 	nstr[source_len - count] = '\0';
-	return nstr;	
+	return nstr;
 }
 /*
  * @param			{const char* source}		source		kaynak char dizi adresi
@@ -195,13 +181,11 @@ char *str_remove(const char * source, const unsigned int start, const unsigned i
  */
 char *str_replace(const char* source, const char find_chr, const char rep_chr)
 {
-	if (source == NULL) return NULL;
-
 	const size_t source_len = strlen(source);
-	char *nstr = (char*)malloc(source_len);
-	if (!nstr) return  NULL;
+	char *nstr;
+	if((nstr = (char*)malloc(source_len))==NULL) return  NULL;
 
-	strcpy(nstr, source);
+	memcpy(nstr, source,source_len + 1);
 
 	for(size_t k = 0; k < nstr[k] != '\0';++k)
 		if (nstr[k] == find_chr) 
@@ -221,7 +205,7 @@ char *str_trim(const char* source, const char *trimchrs, const size_t size)
 {
 	const size_t source_len = strlen(source);
 	size_t start = 0, end = source_len - 1;
-	
+
 	for (; start < source_len; ++start)
 	{
 		size_t i = 0;
@@ -246,10 +230,10 @@ char *str_trim(const char* source, const char *trimchrs, const size_t size)
 	const size_t nlen = end - start + 1;
 	if (nlen == source_len) return (char*)source;
 
-	char *nstr = (char*)malloc(nlen);
-	if (!nstr) return  NULL;
+	char *nstr;
+	if ((nstr = (char*)malloc(nlen)) == NULL) return  NULL;
 
-	strncpy(nstr, source + start, nlen);
+	memcpy(nstr, source + start, nlen);
 	nstr[nlen] = '\0';
 	return  nstr;
 }
@@ -278,10 +262,10 @@ char *str_trimstart(const char* source, const char* trimchrs, const size_t size)
 	const size_t nlen = source_len - start;
 	if (nlen == source_len) return (char*)source;
 
-	char *nstr = (char*)malloc(nlen);
-	if (!nstr) return  NULL;
+	char *nstr;
+	if((nstr = (char*)malloc(nlen)) == NULL) return  NULL;
 
-	strncpy(nstr, source + start, nlen);
+	memcpy(nstr, source + start, nlen);
 	nstr[nlen] = '\0';
 	return  nstr;
 }
@@ -309,10 +293,10 @@ char *str_trimend(const char* source, const char* trimchrs, const size_t size)
 	}
 	if (end == source_len) return (char*)source;
 
-	char *nstr = (char*)malloc(end + 1);
-	if (!nstr) return  NULL;
+	char *nstr;
+	if((nstr = (char*)malloc(end + 1)) == NULL) return  NULL;
 
-	strncpy(nstr, source, end + 1);
+	memcpy(nstr, source, end + 1);
 	nstr[end] = '\0';
 	return  nstr;
 }
@@ -327,15 +311,15 @@ char *str_trimend(const char* source, const char* trimchrs, const size_t size)
 char *str_substring(const char *source, const int start_index, const int length)
 {
 	const size_t source_len = strlen(source);
-	if(source_len < start_index + length) return NULL;
+	if (source_len < start_index + length) return NULL;
 
 	const size_t size = length == 0 ? (source_len - start_index) : length;
 	if (size == source_len) return (char*)source;
 
-	char *nstr = (char*)malloc(size);
-	if (!nstr) return  NULL;
+	char *nstr;
+	if ((nstr = (char*)malloc(size)) == NULL) return  NULL;
 
-	strncpy(nstr, &source[start_index], size);
+	memcpy(nstr, &source[start_index], size);
 	nstr[size] = '\0';
 	return  nstr;
 }
@@ -353,8 +337,8 @@ char * str_toupper(const char * source)
  static char * toupper_or_tolower(const char * source, const enum str_tolower_or_toupper lou)
  {
 	 const size_t source_len = strlen(source);
-	 char *nstr = (char*)malloc(source_len);
-	 if (!nstr) return NULL;
+	 char *nstr;
+	 if ((nstr = (char*)malloc(source_len)) == NULL) return NULL;
 
 	 unsigned int counter = 0;
 	 while (source_len > counter)

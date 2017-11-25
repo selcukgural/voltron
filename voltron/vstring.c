@@ -27,7 +27,7 @@ int str_startswith(const char* source, const char* search_value, const int ignor
 	if (search_len > source_len || search_len == 0 && source_len > 0) {
 		return -1;
 	}
-	unsigned int counter = 0;
+	size_t counter = 0;
 	while (counter != search_len && source[counter] != '\0')
 	{
 		switch (ignore_case)
@@ -59,7 +59,7 @@ int str_endswith(const char* source, const char* search_value, const int ignore_
 		return -1;
 	}
 	const char *ptemp = source + (source_len - search_len);
-	unsigned int counter = 0;
+	size_t counter = 0;
 	while (ptemp[counter] != '\0')
 	{
 		switch (ignore_case)
@@ -77,12 +77,12 @@ int str_endswith(const char* source, const char* search_value, const int ignore_
 }
 /*
  * @param			{const char*}	source			sol tarafına ekleme yapılacak olan karekterler dizisi
- * @param			{unsigned int}	totalwidth		sol başa eklenecek toplam karakter uzunluğu 
+ * @param			{const size_t}	totalwidth		sol başa eklenecek toplam karakter uzunluğu 
  * @param			{char}			pdchr			sol başa eklenecek karakter
  * @description		totalwidth, source dizisinin öğe sayısından büyükse source yazısının sol tarafına aradaki fark kadar pdchr karakterini ekler.
  * returns			başarılı olması durumunda yeni bir char dizisi adresi onun dışındaki durumlarda NULL pointer
  */
-char *str_padleft(const char *source,const unsigned int totalwidth, const char pdchr)
+char *str_padleft(const char *source,const size_t totalwidth, const char pdchr)
 {
 	const size_t source_len = strlen(source);
 	if (source_len >= totalwidth) return NULL;
@@ -91,7 +91,7 @@ char *str_padleft(const char *source,const unsigned int totalwidth, const char p
 	char *nstr; 
 	if((nstr = (char*)malloc(source_len + size + 1))==NULL) return NULL;
 
-	size_t k = 0;
+	size_t k;
 	for(k = 0; k < size; ++k)
 		nstr[k] = pdchr;
 
@@ -100,12 +100,12 @@ char *str_padleft(const char *source,const unsigned int totalwidth, const char p
 }
 /*
 * @param			{const char*}	source			sol tarafına ekleme yapılacak olan karekterler dizisi
-* @param			{unsigned int}	totalwidth		sol başa eklenecek toplam karakter uzunluğu
+* @param			{const size_t}	totalwidth		sol başa eklenecek toplam karakter uzunluğu
 * @param			{char}			pdchr			sol başa eklenecek karakter
 * @description		totalwidth, source dizisinin öğe sayısından büyükse source yazısının sağ tarafına aradaki fark kadar pdchr karakterini ekler.
 * returns			başarılı olması durumunda yeni bir char dizisi adresi onun dışındaki durumlarda NULL pointer
 */
-char *str_padright(const char * source, const unsigned int totalwidth, const char pdchr)
+char *str_padright(const char * source, const size_t totalwidth, const char pdchr)
 {
 
 	const size_t source_len = strlen(source);
@@ -132,11 +132,11 @@ char *str_padright(const char * source, const unsigned int totalwidth, const cha
 /*
  * @param			{const char * source}			source			kaynak char dizi adresi
  * @param			{const char * insert_value}		insert_value	kaynak char dizisine eklenecek olan char dizisi
- * @param			{const unsigned int startpos}	startpos		eklemenin yapılacağı başlangıç pozisyonu
+ * @param			{const size_t startpos}	startpos		eklemenin yapılacağı başlangıç pozisyonu
  * @description		startpos parametresi ile gönderilen pozisyondan başlayarak insert_value ilen gelen char dizisini ekler.
  * @returns			Başarılı olması durumunda yeni bir char dizisi adresi aksi durumda NULL pointer.
  */
-char *str_insert(const char * source, const char * insert_value, const unsigned int startpos)
+char *str_insert(const char * source, const char * insert_value, const size_t startpos)
 {
 	const size_t source_len = strlen(source);
 	const size_t insert_len = strlen(insert_value);
@@ -151,18 +151,16 @@ char *str_insert(const char * source, const char * insert_value, const unsigned 
 }
 /*
  * @param			{const char * source}		source		kaynak char dizi adresi
- * @param			{const unsigned int start}	start		silinmeye başlanacak pozisyon
- * @param			{const unsigned int count}	count		silinecek karakter sayısı
+ * @param			{const size_t start}	start		silinmeye başlanacak pozisyon
+ * @param			{const size_t count}	count		silinecek karakter sayısı
  * @description		kaynak char dizisi içerisinde belirtilen uzunlukta karakter siler.
  * @returns			Başarılı olması durumunda yeni bir char dizisi adresi aksi durumda NULL pointer.
  */
-char *str_remove(const char * source, const unsigned int start, const unsigned int count)
+char *str_remove(const char * source, const size_t start, const size_t count)
 {
 	const size_t source_len = strlen(source);
 	char *nstr;
 	if ((nstr = (char*)malloc(source_len - count + 1)) == NULL) return  NULL;
-
-	const unsigned int tstart = start;
 
 	memcpy(nstr, source,source_len + 1);
 	nstr[start] = '\0';
@@ -208,7 +206,7 @@ char *str_trim(const char* source, const char *trimchrs, const size_t size)
 
 	for (; start < source_len; ++start)
 	{
-		size_t i = 0;
+		size_t i;
 		const char chr = source[start];
 
 		for (i = 0; i < size; ++i)
@@ -218,7 +216,7 @@ char *str_trim(const char* source, const char *trimchrs, const size_t size)
 	}
 	for (; end >= start; --end)
 	{
-		size_t i = 0;
+		size_t i;
 		const char chr = source[end];
 
 		for (i = 0; i < size; ++i)
@@ -251,7 +249,7 @@ char *str_trimstart(const char* source, const char* trimchrs, const size_t size)
 	size_t start = 0;
 	for(;start < source_len;++start)
 	{
-		size_t i = 0;
+		size_t i;
 		const char chr = source[start];
 
 		for (i = 0; i < size; ++i)
@@ -281,9 +279,9 @@ char *str_trimend(const char* source, const char* trimchrs, const size_t size)
 {
 	const size_t source_len = strlen(source);
 	size_t end = source_len;
-	for (; end != 0; --end)
+	while(--end)
 	{
-		size_t i = 0;
+		size_t i;
 		const char chr = source[end - 1];
 
 		for (i = 0; i < size; ++i)
@@ -308,7 +306,7 @@ char *str_trimend(const char* source, const char* trimchrs, const size_t size)
  * geriye kalan tüm karakterler eklenir.
  * @returns		yeni bir char dizisi adresi. istenilen uzunluk değerleri source ile gelen değerin uzunluğundan büyükse veya eşitse source' un kendi adresi 
  */
-char *str_substring(const char *source, const int start_index, const int length)
+char *str_substring(const char *source, const size_t start_index, const size_t length)
 {
 	const size_t source_len = strlen(source);
 	if (source_len < start_index + length) return NULL;
@@ -340,7 +338,7 @@ char * str_toupper(const char * source)
 	 char *nstr;
 	 if ((nstr = (char*)malloc(source_len)) == NULL) return NULL;
 
-	 unsigned int counter = 0;
+	 size_t counter = 0;
 	 while (source_len > counter)
 	 {
 		 nstr[counter] = lou == upper ? toupper(source[counter]) : tolower(source[counter]);

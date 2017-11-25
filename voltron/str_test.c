@@ -167,5 +167,4 @@ void str_toupper_test(void)
 	assert_equal_str(str_toupper("dunyada biraz huzur herseye bedel...ilac neye yarar vade gelmisse eger"), "DUNYADA BIRAZ HUZUR HERSEYE BEDEL...ILAC NEYE YARAR VADE GELMISSE EGER", __LINE__);
 	assert_equal_str(str_toupper("sELaMlaR"), "SELAMLAR", __LINE__);
 
-
 }

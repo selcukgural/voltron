@@ -5,12 +5,7 @@
 #include <stdlib.h>
 
 
-enum str_tolower_or_toupper
-{
-	lower = 1,
-	upper = 2
-};
-static char *toupper_or_tolower(const char *source, const enum str_tolower_or_toupper lou);
+static char * toupper_or_tolower(const char * source, const unsigned int lou);
 
 /*
 * @param		{const char*}	source			üzerinde arama yapılacak karaketer dizisi
@@ -181,11 +176,11 @@ char *str_remove(const char * source, const unsigned int start, const unsigned i
  */
 char *str_replace(const char* source, const char find_chr, const char rep_chr)
 {
-	const size_t source_len = strlen(source);
+	const size_t source_len = strlen(source) +1;
 	char *nstr;
 	if((nstr = (char*)malloc(source_len))==NULL) return  NULL;
 
-	memcpy(nstr, source,source_len + 1);
+	memcpy(nstr, source,source_len);
 
 	for(size_t k = 0; k < nstr[k] != '\0';++k)
 		if (nstr[k] == find_chr) 
@@ -326,15 +321,15 @@ char *str_substring(const char *source, const int start_index, const int length)
 
 char * str_toupper(const char * source)
 {
-	return toupper_or_tolower(source, upper);
+	return toupper_or_tolower(source, 2);
 }
 
  char * str_tolower(const char * source)
  {
-	 return toupper_or_tolower(source, lower);
+	 return toupper_or_tolower(source, 1);
  }
 
- static char * toupper_or_tolower(const char * source, const enum str_tolower_or_toupper lou)
+ static char * toupper_or_tolower(const char * source, const unsigned int lou)
  {
 	 const size_t source_len = strlen(source);
 	 char *nstr;
@@ -343,7 +338,7 @@ char * str_toupper(const char * source)
 	 unsigned int counter = 0;
 	 while (source_len > counter)
 	 {
-		 nstr[counter] = lou == upper ? toupper(source[counter]) : tolower(source[counter]);
+		 nstr[counter] = lou == 2 ? toupper(source[counter]) : tolower(source[counter]);
 		 ++counter;
 	 }
 	 nstr[source_len] = '\0';

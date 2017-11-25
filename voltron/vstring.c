@@ -5,12 +5,8 @@
 #include <stdlib.h>
 
 
-enum str_tolower_or_toupper
-{
-	lower = 1,
-	upper = 2
-};
-static char *toupper_or_tolower(const char *source, const enum str_tolower_or_toupper lou);
+
+static char *toupper_or_tolower(const char *source, const size_t lou);
 
 /*
 * @param		{const char*}	source			üzerinde arama yapılacak karaketer dizisi
@@ -324,15 +320,15 @@ char *str_substring(const char *source, const size_t start_index, const size_t l
 
 char * str_toupper(const char * source)
 {
-	return toupper_or_tolower(source, upper);
+	return toupper_or_tolower(source, 2);
 }
 
  char * str_tolower(const char * source)
  {
-	 return toupper_or_tolower(source, lower);
+	 return toupper_or_tolower(source, 1);
  }
 
- static char * toupper_or_tolower(const char * source, const enum str_tolower_or_toupper lou)
+ static char * toupper_or_tolower(const char * source, const size_t lou)
  {
 	 const size_t source_len = strlen(source);
 	 char *nstr;
@@ -341,7 +337,7 @@ char * str_toupper(const char * source)
 	 size_t counter = 0;
 	 while (source_len > counter)
 	 {
-		 nstr[counter] = lou == upper ? toupper(source[counter]) : tolower(source[counter]);
+		 nstr[counter] = lou == 2 ? toupper(source[counter]) : tolower(source[counter]);
 		 ++counter;
 	 }
 	 nstr[source_len] = '\0';

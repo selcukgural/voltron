@@ -1,4 +1,4 @@
-#include "vstring.h"
+﻿#include "voltron.h"
 #include "vassert.h"
 #include "str_test.h"
 
@@ -37,23 +37,32 @@ void str_run_tests(void)
 
 void str_endswith_test(void)
 {
-	assert_equal_int(str_endswith("selamlar nasilsin nasil gidiyoR", "GiDiYOr", 1), -1, __LINE__);
-	assert_equal_int(str_endswith("selamlar nasilsin nasil gidiyoR", "GiDiYOr", 0), 0, __LINE__);
-	assert_equal_int(str_endswith("  ", "", 1), -1, __LINE__);
-	assert_equal_int(str_endswith("  ", " ", 1), 0, __LINE__);
-	assert_equal_int(str_endswith("merhaba dunya", "  dunya", 1), -1, __LINE__);
-	assert_equal_int(str_endswith("merhaba dunya", " dunya ", 1), -1, __LINE__);
+	assert_notequal_int(str_endswith("merhaba dunya", "  dunya", 1), 0, __LINE__);
+	assert_notequal_int(str_endswith("merhaba dunya", " dunya ", 1), 0, __LINE__);
+	assert_notequal_int(str_endswith("selamlar nasilsin nasil gidiyoR", "GiDiYOr", 1), 0, __LINE__);
+	assert_notequal_int(str_endswith("selamlar nasilsin nasil gidiyoR", "GiDiyOr", 1), 0, __LINE__);
+	assert_notequal_int(str_endswith("  ", "", 1), 0, __LINE__);
+
+
+	assert_equal_int(str_endswith("blahh blalh  ", " ", 1), 0, __LINE__);
+	assert_equal_int(str_endswith("...", ".", 1), 0, __LINE__);
 	assert_equal_int(str_endswith("merhaba dunya", "Dunya", 0), 0, __LINE__);
+	assert_equal_int(str_endswith("neil young still rock!", " young still rock!", 1), 0, __LINE__);
 }
 
 void str_startswith_test(void)
 {
+	assert_notequal_int(str_startswith("Rock' In the free world!", "Rock ", 1), 0, __LINE__);
+	assert_notequal_int(str_startswith("kim demiş su olmaz kim demis bu olmaz. kim yazmis kanunlari kim yazmis kitabi?", "Kim", 1), 0, __LINE__);
+
 	assert_equal_int(str_startswith("merhaba dunya", "mer", 0), 0, __LINE__);
-	assert_equal_int(str_startswith("merhaba dunya", "Mer", 1), -1, __LINE__);
+	assert_equal_int(str_startswith("merhaba dunya", "Mer", 1), 1, __LINE__);
 	assert_equal_int(str_startswith("merhaba dunya", "MerHABA ", 0), 0, __LINE__);
-	assert_equal_int(str_startswith("merhaba dunya", "MerHABA ", 1), -1, __LINE__);
+	assert_equal_int(str_startswith("merhaba dunya", "MerHABA ", 1), 1, __LINE__);
 	assert_equal_int(str_startswith("  dunya", " ", 0), 0, __LINE__);
+	assert_equal_int(str_startswith("selam", "selam",1), 0, __LINE__);
 	assert_equal_int(str_startswith("  ", "", 0), -1, __LINE__);
+
 }
 
 void str_padright_test(void)

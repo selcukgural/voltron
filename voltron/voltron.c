@@ -1,9 +1,8 @@
 ﻿#pragma warning(disable:4996)
-#include "vstring.h"
+#include "voltron.h"
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
-
 
 
 static char *toupper_or_tolower(const char *source, const size_t lou);
@@ -23,21 +22,12 @@ int str_startswith(const char* source, const char* search_value, const int ignor
 	if (search_len > source_len || search_len == 0 && source_len > 0) {
 		return -1;
 	}
-	size_t counter = 0;
-	while (counter != search_len && source[counter] != '\0')
-	{
-		switch (ignore_case)
-		{
-			case 0:
-				if(toupper(source[counter]) != toupper(search_value[counter])) return  -1;
-				break;
-			default:
-				if (source[counter] != search_value[counter]) return -1;
-				break;
-		}
-		++counter;
-	}	
-	return 0;
+	if(ignore_case)	{
+		return memcmp(source, search_value, search_len);
+	}
+	size_t k = 0;
+	for (; k < search_len && toupper(source[k]) == toupper(search_value[k]); ++k);
+	return  k == search_len ? 0 : -1;
 }
 /*
 * @param		{const char*}	source			üzerinde arama yapılacak karaketer dizisi
@@ -54,22 +44,12 @@ int str_endswith(const char* source, const char* search_value, const int ignore_
 	if (search_len > source_len || search_len == 0 && source_len > 0) {
 		return -1;
 	}
-	const char *ptemp = source + (source_len - search_len);
-	size_t counter = 0;
-	while (ptemp[counter] != '\0')
-	{
-		switch (ignore_case)
-		{
-			case 0:
-				if (toupper(ptemp[counter]) != toupper(search_value[counter])) return -1;
-				break;
-			default:
-				if(ptemp[counter] != search_value[counter]) return -1;
-				break;
-		}
-		++counter;
+	if(ignore_case)	{
+		return memcmp(&source[source_len - search_len], search_value, search_len);
 	}
-	return 0;
+	size_t k = source_len - search_len,s = 0;
+	for (; k != source_len && toupper(source[k]) == toupper(search_value[s]); ++k, ++s);
+	return k == source_len ? 0 : -1;
 }
 /*
  * @param			{const char*}	source			sol tarafına ekleme yapılacak olan karekterler dizisi
@@ -81,7 +61,7 @@ int str_endswith(const char* source, const char* search_value, const int ignore_
 char *str_padleft(const char *source,const size_t totalwidth, const char pdchr)
 {
 	const size_t source_len = strlen(source);
-	if (source_len >= totalwidth) return NULL;
+	if (source_len >= totalwidth) return (char*)source;
 
 	const size_t size = totalwidth - source_len;
 	char *nstr; 
@@ -94,6 +74,10 @@ char *str_padleft(const char *source,const size_t totalwidth, const char pdchr)
 	nstr[k] = '\0';
 	return strcat(nstr, source);
 }
+void str_padleft_ip(char * source, const size_t totalwidth, const char pdchr)
+{
+
+}
 /*
 * @param			{const char*}	source			sol tarafına ekleme yapılacak olan karekterler dizisi
 * @param			{const size_t}	totalwidth		sol başa eklenecek toplam karakter uzunluğu
@@ -105,7 +89,7 @@ char *str_padright(const char * source, const size_t totalwidth, const char pdch
 {
 
 	const size_t source_len = strlen(source);
-	if (source_len >= totalwidth) return NULL;
+	if (source_len >= totalwidth) return (char*)source;
 
 	const size_t size = totalwidth - source_len;
 	char *nstr;
@@ -124,6 +108,14 @@ char *str_padright(const char * source, const size_t totalwidth, const char pdch
 
 	nstr[tempk + k] = '\0';
 	return  nstr;
+}
+
+void str_padright_ip(char * source, const size_t totalwidth, const char pdchr)
+{
+	const size_t source_len = strlen(source);
+	if (source_len >= totalwidth) return;
+	memset(source + source_len +1, pdchr, totalwidth - (source_len - 1));
+	source[totalwidth - 1] = '\0';
 }
 /*
  * @param			{const char * source}			source			kaynak char dizi adresi
@@ -323,12 +315,12 @@ char * str_toupper(const char * source)
 	return toupper_or_tolower(source, 2);
 }
 
- char * str_tolower(const char * source)
+char * str_tolower(const char * source)
  {
 	 return toupper_or_tolower(source, 1);
  }
 
- static char * toupper_or_tolower(const char * source, const size_t lou)
+static char * toupper_or_tolower(const char * source, const size_t lou)
  {
 	 const size_t source_len = strlen(source);
 	 char *nstr;
@@ -342,4 +334,150 @@ char * str_toupper(const char * source)
 	 }
 	 nstr[source_len] = '\0';
 	 return nstr;
+ }
+
+
+/*
+ *	@param			{const int *source}					source			Arama yapılacak olan int dizisinin adresi
+ *  @param			{const struct condition condition}	condition		Arama yapılacak kriter
+ *	@param			{const size_t source_size}			source_size		Source adresinin gösterdiği dizinin eleman sayısı
+ *	@param			{size_t *return_size}				*return_size	Fonsiyonun geri döndüğü int dizisinin eleman sayısı
+ *	@description	Kaynak dizi içerisinde condition ile gönderilen parametreye uygun şekilde arama yapar.
+ *	@returns		Kritlere uygun aranan tüm değerleri çıkararak dinamik oluşturulan yeni int dizisi adresinde geriye döner.
+ *	Aranan değerin bulunmaması durumunda geriye kaynak int dizisinin adresini bellek yetersiz olduğu durumda ise NULL pointer.
+ */
+int *int_removeall(const int *source, const struct condition condition, const size_t source_size, size_t *return_size)
+ {
+	 size_t counter = 0;
+	 size_t temp = 0;
+	 int *narray = NULL;
+
+	 switch (condition.predicate) {
+	 case LESS_THAN:
+		 for (size_t k = 0; k < source_size; ++k)
+			 if (source[k] < condition.predicate_value)
+				 ++counter;
+
+		 if (counter == 0) return  (int*)source;
+		 if ((narray = (int*)malloc(counter * sizeof(int))) == NULL) return NULL;
+
+		 temp = counter;
+		 *return_size = counter;
+		 counter = 0;
+
+		 for (size_t k = 0; k < source_size; ++k) {
+			 if (source[k] < condition.predicate_value) {
+				 narray[counter++] = source[k];
+				 if (temp == counter) break;
+			 }
+		 }
+		 return narray;
+	 case LESS_THAN_OR_EQUAL:
+		 for (size_t k = 0; k < source_size; ++k)
+			 if (source[k] <= condition.predicate_value)
+				 ++counter;
+
+		 if (counter == 0) return  (int*)source;
+		 if ((narray = (int*)malloc(counter * sizeof(int))) == NULL) return NULL;
+
+		 temp = counter;
+		 *return_size = counter;
+		 counter = 0;
+
+		 for (size_t k = 0; k < source_size; ++k) {
+			 if (source[k] <= condition.predicate_value) {
+				 narray[counter++] = source[k];
+				 if (temp == counter) break;
+			 }
+		 }
+		 return narray;
+	 case GREATER:
+		 for (size_t k = 0; k < source_size; ++k)
+			 if (source[k] > condition.predicate_value)
+				 ++counter;
+
+		 if (counter == 0) return  (int*)source;
+		 if ((narray = (int*)malloc(counter * sizeof(int))) == NULL) return NULL;
+
+		 temp = counter;
+		 *return_size = counter;
+		 counter = 0;
+
+		 for (size_t k = 0; k < source_size; ++k) {
+			 if (source[k] > condition.predicate_value) {
+				 narray[counter++] = source[k];
+				 if (temp == counter) break;
+			 }
+		 }
+		 return narray;
+	 case GREATER_THAN_EQUAL:
+		 for (size_t k = 0; k < source_size; ++k)
+			 if (source[k] >= condition.predicate_value)
+				 ++counter;
+
+		 if (counter == 0) return  (int*)source;
+		 if ((narray = (int*)malloc(counter * sizeof(int))) == NULL) return NULL;
+
+		 temp = counter;
+		 *return_size = counter;
+		 counter = 0;
+
+		 for (size_t k = 0; k < source_size; ++k) {
+			 if (source[k] >= condition.predicate_value) {
+				 narray[counter++] = source[k];
+				 if (temp == counter) break;
+			 }
+		 }
+		 return narray;
+	 case NOT_EQUAL:
+		 for (size_t k = 0; k < source_size; ++k)
+			 if (source[k] != condition.predicate_value)
+				 ++counter;
+
+		 if (counter == 0) return  (int*)source;
+		 if ((narray = (int*)malloc(counter * sizeof(int))) == NULL) return NULL;
+		 temp = counter;
+		 *return_size = counter;
+		 counter = 0;
+
+		 for (size_t k = 0; k < source_size; ++k) {
+			 if (source[k] != condition.predicate_value) {
+				 narray[counter++] = source[k];
+				 if (temp == counter) break;
+			 }
+		 }
+		 return narray;
+	 default:;
+	 }
+	 return narray;
+ }
+/*
+  *	@param			{const int *source}				source			Arama yapılacak olan int dizisinin adresi
+  *	@param			{const size_t source_size}		source_size		Source adresinin gösterdiği dizinin eleman sayısı
+  *	@param			{const int rvalue}				rvalue			Arama yapılacak değer
+  *	@param			{size_t *return_size}			*return_size	Fonsiyonun geri döndüğü int dizisinin eleman sayısı
+  *	@description	Kaynak dizi içerisinde aranan ilk değeri çıkararak diğer tüm elemanlarını dinamik oluşturulan bir diziye ekler.
+  *	@returns		Aranan değer bulunması durumunda ilk bulduğu değer hariçindeki diğer tüm elemanları dinamik oluşturulan int dizisi adresinde geriye döner. 
+  *	Aranan değerin bulunmaması durumunda geriye kaynak int dizisinin adresini bellek yetersiz olduğu durumda ise NULL pointer.
+  */
+int * int_remove(const int *source, const size_t source_size, const int rvalue, size_t *return_size)
+ {
+	 size_t k = 0;
+	 for (; k < source_size && source[k] != rvalue; ++k);
+
+	 if (k == source_size)
+	 {
+		 *return_size = source_size;
+		 return (int*)source;
+	 }
+
+	 *return_size = source_size - 1;
+
+	 int *narray = NULL;
+	 if ((narray = (int*)malloc((source_size - 1) * sizeof(int))) == NULL) return NULL;
+	 
+	 memcpy(narray, source , k * sizeof(int));
+	 memcpy(narray + k, source + k + 1, (*return_size - k) * sizeof(int));
+	 
+	 return narray;
  }

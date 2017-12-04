@@ -3,10 +3,11 @@
 #include <stdio.h>
 
 #include "str_test.h"
-#include "vstring.h"
-
+#include "voltron.h"
+#include <string.h>
 
 int main() {
+	
 
 	str_run_tests();
 

@@ -112,14 +112,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="str_test.h" />
-    <ClInclude Include="vstring.h" />
+    <ClInclude Include="voltron.h" />
     <ClInclude Include="vassert.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c" />
     <ClCompile Include="str_test.c" />
     <ClCompile Include="vassert.c" />
-    <ClCompile Include="vstring.c" />
+    <ClCompile Include="voltron.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

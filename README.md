@@ -129,3 +129,29 @@ char *nstr5 = str_replace("vallah", 'v', 'y'); //"yallah"
 //
 free(nstr5);
 ```
+
+## str_trim
+```C
+char *str_trim(const char *source, const char *trimchrs, const size_t size);
+```
+* Her şey yolundaysa geriye dinamik yaratılmış bir dizinin adresini döner.
+* Trim edilecek herhangi bir karakter bulunamamışsa _source_ ile gelen değer
+* Belleğin yetersiz olması durumunda _NULL_ pointer
+```C
+char chrs1[1] = { 'r' };
+char *nstr1 = str_trim("rehber", chrs1, 1); //"ehbe"
+//
+free(nstr1);
+char chrs2[3] = { 'a','r','n' };
+char *nstr2 = str_trim("nasil gidiyor", chrs2, 3); //"sil gidiyo"
+//
+free(nstr2);
+char chrs3[1] = { ' ' };
+char *nstr3 = str_trim("    hava da tam kar havasi ha!      ", chrs3, 1); //"hava da tam kar havasi ha!"
+//
+free(ntsr3);
+char chrs4[4] = { 'a',' ','c','g' };
+char *nstr3 = str_trim("    a bcdef   g   a", chrs4, 4); //"bcdef"
+//
+free(nstr3);
+```

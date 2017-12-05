@@ -161,7 +161,7 @@ free(nstr3);
 char *str_trimstart(const char* source, const char* trimchrs, const size_t size);
 ```
 * Her şey yolundaysa geriye dinamik yaratılmış bir dizinin adresini döner.
-* Trim edilecek herhangi bir karakter bulunamamışsa _source_ ile gelen değer
+* Baştan trim edilecek herhangi bir karakter bulunamamışsa _source_ ile gelen değer
 * Belleğin yetersiz olması durumunda _NULL_ pointer
 ```C
 char chrs1[1] = { 'n' };
@@ -191,7 +191,7 @@ free(nstr5);
 char *str_trimend(const char *source, const char *trimchrs, const size_t size);
 ```
 * Her şey yolundaysa geriye dinamik yaratılmış bir dizinin adresini döner.
-* Trim edilecek herhangi bir karakter bulunamamışsa _source_ ile gelen değer
+* Sondan trim edilecek herhangi bir karakter bulunamamışsa _source_ ile gelen değer
 * Belleğin yetersiz olması durumunda _NULL_ pointer
 ```C
 char chrs1[1] = { 'r' };
@@ -214,4 +214,32 @@ char chrs5[] = { 'h','e','p','.' ,' ' };
 char *nstr5 = str_trimend("bir hisimla geldi gecti peh peh peh...", chrs5, 5); //"bir hisimla geldi gecti"
 //
 free(nstr5);
+```
+
+## str_substring
+```C
+char *str_substring(const char *source, const size_t start_index, const size_t length);
+```
+* Her şey yolundaysa geriye dinamik yaratılmış bir dizinin adresini döner.
+* start_index ve length toplamı source' un length den uzunca _NULL_ pointer
+* Substring edilecek bir durum yoksa char *source
+* Belleğin yetersiz olması durumunda _NULL_ pointer
+```C
+char *nstr1 = str_substring("anacim",0,3); //"ana"
+//
+free(nstr1);
+
+char *nstr2 = str_substring("Yapraklarim suda balik gibi kivil kivil", 12, 15); //"suda balik gibi"
+//
+free(nstr2);
+
+
+char *nstr3 = str_substring("amacim kimseyi kirmak degildi, yanlis anlasildim!", 31, 0); //"yanlis anlasildim!"
+//
+free(nstr3);
+
+
+char *nstr4 = str_substring("drama koprusu", 0, 2); //"dr"
+//
+free(nstr4);
 ```

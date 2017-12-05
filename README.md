@@ -155,3 +155,63 @@ char *nstr3 = str_trim("    a bcdef   g   a", chrs4, 4); //"bcdef"
 //
 free(nstr3);
 ```
+
+## str_trimstart
+```C
+char *str_trimstart(const char* source, const char* trimchrs, const size_t size);
+```
+* Her şey yolundaysa geriye dinamik yaratılmış bir dizinin adresini döner.
+* Trim edilecek herhangi bir karakter bulunamamışsa _source_ ile gelen değer
+* Belleğin yetersiz olması durumunda _NULL_ pointer
+```C
+char chrs1[1] = { 'n' };
+char *nstr1 = str_trimstart("nasil gidiyor", chrs1, 1); //"asil gidiyor"
+//
+free(nstr1);
+char chrs2[4] = { ' ','c','k','o' };
+char *nstr2 = str_trimstart("cok yorgunum beni bekleme kaptan!", chrs2, 4); //"yorgunum beni bekleme kaptan!"
+//
+free(nstr2);
+char chrs3[1] = { ' ' };
+char *nstr3 = str_trimstart(" bir sevmek bin defa olmekmis!", chrs3, 1); //"bir sevmek bin defa olmekmis!"
+//
+free(nstr3);
+char chrs4[4] = { '*',' ','?','/' };
+char *nstr4 = str_trimstart("? / *gecenin ucunde ? *", chrs4, 4); //"gecenin ucunde ? *"
+//
+free(nstr4);
+char chrs5[1] = { '.' };
+char *nstr5 = str_trimstart("...gitmemesi gerekiyordu.", chrs5, 1); //"gitmemesi gerekiyordu."
+//
+free(nstr5);
+```
+
+## str_trimend
+```C
+char *str_trimend(const char *source, const char *trimchrs, const size_t size);
+```
+* Her şey yolundaysa geriye dinamik yaratılmış bir dizinin adresini döner.
+* Trim edilecek herhangi bir karakter bulunamamışsa _source_ ile gelen değer
+* Belleğin yetersiz olması durumunda _NULL_ pointer
+```C
+char chrs1[1] = { 'r' };
+char *nstr1 = str_trimend("nasil gidiyor", chrs1, 1); //"nasil gidiyo"
+//
+free(nstr1);
+char chrs2[] = { '!',' ' };
+char *nstr2 = str_trimend("onumden cekilirsen istanbul gorunecek  !  ", chrs2, 2); //"onumden cekilirsen istanbul gorunecek"
+//
+free(nstr2);
+char chrs3[] = { '~',' ' };
+char *nstr3 = str_trimend("master of the wind ~", chrs3, 2); //"master of the wind"
+//
+free(nstr3);
+char chrs4[] = { '.' };
+char *nstr4 = str_trimend("...ustalastik biraz daha tasi kirmakta, dostu dusmani ayirmakta...", chrs4, 1); //"...ustalastik biraz daha tasi kirmakta, dostu dusmani ayirmakta"
+//
+free(nstr4);
+char chrs5[] = { 'h','e','p','.' ,' ' };
+char *nstr5 = str_trimend("bir hisimla geldi gecti peh peh peh...", chrs5, 5); //"bir hisimla geldi gecti"
+//
+free(nstr5);
+```

@@ -1,5 +1,5 @@
 # voltron
-C# string extension methodlarının C diline implementasyonu
+Bazı C# extension methodlarının C diline implementasyonu
 
 
 ## str_startswith

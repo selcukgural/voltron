@@ -266,3 +266,50 @@ char *nstr4 = str_substring("drama koprusu", 0, 2); //"dr"
 //
 free(nstr4);
 ```
+
+## str_toupper
+```C
+char *str_toupper(const char *source);
+```
+* Her şey yolundaysa geriye dinamik yaratılmış bir dizinin adresini döner.
+* Belleğin yetersiz olması durumunda _NULL_ pointer
+```C
+char *nstr1 = str_toupper("baris manco"), //"BARIS MANCO"
+//
+free(nstr1);
+
+char *nstr2 = str_toupper("dunyada biraz huzur herseye bedel...ilac neye yarar vade gelmisse eger"); //"DUNYADA BIRAZ HUZUR HERSEYE BEDEL...ILAC NEYE YARAR VADE GELMISSE EGER"
+//
+free(nstr2);
+
+
+char *nstr3 = str_toupper("sELaMlaR"); //"SELAMLAR"
+//
+free(nstr3);
+
+
+char *nstr4 = str_substring("drama koprusu", 0, 2); //"dr"
+//
+free(nstr4);
+```
+
+## str_tolower
+```C
+char *str_tolower(const char *source);
+```
+* Her şey yolundaysa geriye dinamik yaratılmış bir dizinin adresini döner.
+* Belleğin yetersiz olması durumunda _NULL_ pointer
+```C
+char *nstr1 = str_tolower("SELAMLAR"); //"selamlar"
+//
+free(nstr1);
+
+char *nstr2 = str_tolower("HAYAT baYRam Olsa"); //"hayat bayram olsa"
+//
+free(nstr2);
+
+
+char *nstr3 = str_tolower("olmadi ama"); //"olmadi ama"
+//
+free(nstr3);
+```

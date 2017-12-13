@@ -49,6 +49,35 @@ char *nstr2 = str_padright("Turkiy", 7, 'e'); //Turkiye
 free(nstr2);
 ```
 
+## str_padright_inplace
+```C
+void str_padright_inplace(char * source, const size_t totalwidth, const char pdchr);
+```
+* source char dizisini yerinde değiştirir
+* totalwidth, source ile gelen diziden uzunsa source' un adresi.
+```C
+	char str1[7] = "selam";
+	str_padright_inplace(str1, (size_t)6, (const char)'s');
+	assert_equal_str(str1, "selams", __LINE__,"str_padright_inplace");
+
+	char str2[17] = "dedi ve gitti";
+	str_padright_inplace(str2, (size_t)16, (const char)'.');
+	assert_equal_str(str2, "dedi ve gitti...", __LINE__,"str_padright_inplace");
+
+	char str3[25] = "her sey sermaye icin...";
+	str_padright_inplace(str3, (size_t)24, (const char)' ');
+	assert_equal_str(str3, "her sey sermaye icin... ", __LINE__,"str_padright_inplace");
+
+
+	char str4[10] = "##here";
+	str_padright_inplace(str4, (size_t)8, (const char)'#');
+	assert_equal_str(str4, "##here##", __LINE__,"str_padright_inplace");
+
+	char str5[9] = "Manowar";
+	str_padright_inplace(str5, (size_t)8, (const char)'#');
+	assert_equal_str(str5, "Manowar#", __LINE__,"str_padright_inplace");
+```
+
 ## str_padleft
 ```C
 char *str_padleft(const char *source, const size_t totalwidth, const char pdchr);
@@ -64,6 +93,36 @@ free(nstr1);
 char *nstr2 = str_padleft("22", 4, '1'); //"1122"
 //
 free(nstr2);
+```
+
+## str_padleft_inplace_test
+```C
+void str_padleft_inplace(char * source, const size_t totalwidth, const char pdchr);
+```
+* source char dizisini yerinde değiştirir
+* totalwidth, source ile gelen diziden uzunsa source' un adresi.
+* Belleğin yetersiz olması durumunda _NULL_ pointer
+```C
+	char str1 [7]= "selam";
+	str_padleft_inplace(str1,(size_t)6, (const char)'s');
+	assert_equal_str(str1, "sselam", __LINE__,"str_padleft_inplace");
+
+	char str2[17] = "dedi ve gitti";
+	str_padleft_inplace(str2, (size_t)16, (const char)'.');
+	assert_equal_str(str2, "...dedi ve gitti", __LINE__,"str_padleft_inplace");
+
+	char str3[25] = "her sey sermaye icin...";
+	str_padleft_inplace(str3, (size_t)24, (const char)' ');
+	assert_equal_str(str3, " her sey sermaye icin...", __LINE__,"str_padleft_inplace");
+
+
+	char str4[10] = "here##";
+	str_padleft_inplace(str4, (size_t)8, (const char)'#');
+	assert_equal_str(str4, "##here##", __LINE__,"str_padleft_inplace");
+
+	char str5[9] = "Manowar";
+	str_padleft_inplace(str5, (size_t)8, (const char)'#');
+	assert_equal_str(str5, "#Manowar", __LINE__,"str_padleft_inplace");
 ```
 
 ## str_insert

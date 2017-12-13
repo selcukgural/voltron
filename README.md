@@ -64,11 +64,9 @@ char str2[17] = "dedi ve gitti";
 str_padright_inplace(str2, (size_t)16, (const char)'.');
 assert_equal_str(str2, "dedi ve gitti...", __LINE__,"str_padright_inplace");
 
-
 char str3[25] = "her sey sermaye icin...";
 str_padright_inplace(str3, (size_t)24, (const char)' ');
 assert_equal_str(str3, "her sey sermaye icin... ", __LINE__,"str_padright_inplace");
-
 
 char str4[10] = "##here";
 str_padright_inplace(str4, (size_t)8, (const char)'#');
@@ -115,7 +113,6 @@ assert_equal_str(str2, "...dedi ve gitti", __LINE__,"str_padleft_inplace");
 char str3[25] = "her sey sermaye icin...";
 str_padleft_inplace(str3, (size_t)24, (const char)' ');
 assert_equal_str(str3, " her sey sermaye icin...", __LINE__,"str_padleft_inplace");
-
 
 char str4[10] = "here##";
 str_padleft_inplace(str4, (size_t)8, (const char)'#');

@@ -1,5 +1,5 @@
 # voltron
-Bazı C# extension methodlarının C diline implementasyonu
+C dilinde kendimi geliştirebilmek adına yaptığım yaparken de C# dan esinlendiğim çalışmam...
 
 
 ## str_startswith

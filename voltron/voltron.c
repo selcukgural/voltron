@@ -5,6 +5,10 @@
 #include <stdlib.h>
 
 
+
+
+/*								START CHAR										*/
+
 static char *toupper_or_tolower(const char *source, const size_t lou);
 
 /*
@@ -56,7 +60,7 @@ int str_endswith(const char* source, const char* search_value, const int ignore_
  * @param			{const size_t}	totalwidth		sol başa eklenecek toplam karakter uzunluğu 
  * @param			{char}			pdchr			sol başa eklenecek karakter
  * @description		totalwidth, source dizisinin öğe sayısından büyükse source yazısının sol tarafına aradaki fark kadar pdchr karakterini ekler.
- * returns			başarılı olması durumunda yeni bir char dizisi adresi onun dışındaki durumlarda NULL pointer
+ * @returns			başarılı olması durumunda yeni bir char dizisi adresi onun dışındaki durumlarda NULL pointer
  */
 char *str_padleft(const char *source,const size_t totalwidth, const char pdchr)
 {
@@ -74,9 +78,28 @@ char *str_padleft(const char *source,const size_t totalwidth, const char pdchr)
 	nstr[k] = '\0';
 	return strcat(nstr, source);
 }
-void str_padleft_ip(char * source, const size_t totalwidth, const char pdchr)
+/*
+ * @param			{char *source}				source			sol tarafına ekleme yapılacak olan karekterler dizisi
+ * @param			{const size_t totalwidth}	totalwidth		sol tarafa eklenecek olan karakterin maksimum genişliği
+ * @param			{char}						pdchr			sol başa eklenecek karakter
+ * @description		totalwidth, source dizisinin öğe sayısından büyükse source yazısının sol tarafına aradaki fark kadar pdchr karakterini ekler.
+ * @returns			başarılı olması durumunda değişen source dizisi. source' un uzunluğu büyük veya eşitse (>=) totalwidth' e hiçbir şey yapılmaz. Değişiklik için yeterli
+ * bellek alanını olmaması durumunda NULL pointer
+ */
+void str_padleft_inplace(char * source, const size_t totalwidth, const char pdchr)
 {
+	const size_t source_len = strlen(source);
+	if(source_len >= totalwidth) return;
 
+	char *source_temp;
+	if((source_temp = (char*)malloc(totalwidth)) == NULL) return;
+
+	const size_t padsize = (totalwidth - source_len);
+	memset(source_temp, pdchr, padsize);
+	memcpy(&source_temp[padsize],source, source_len);
+	memcpy(source, source_temp, totalwidth);
+	source[totalwidth] = '\0';
+	free(source_temp);
 }
 /*
 * @param			{const char*}	source			sol tarafına ekleme yapılacak olan karekterler dizisi
@@ -109,13 +132,19 @@ char *str_padright(const char * source, const size_t totalwidth, const char pdch
 	nstr[tempk + k] = '\0';
 	return  nstr;
 }
-
-void str_padright_ip(char * source, const size_t totalwidth, const char pdchr)
+/*
+* @param			{char *source}				source			sağ tarafına ekleme yapılacak olan karekterler dizisi
+* @param			{const size_t totalwidth}	totalwidth		sağ tarafa eklenecek olan karakterin maksimum genişliği
+* @param			{char}						pdchr			sağ başa eklenecek karakter
+* @description		totalwidth, source dizisinin öğe sayısından büyükse source yazısının sol tarafına aradaki fark kadar pdchr karakterini ekler.
+* @returns			başarılı olması durumunda değişen source dizisi. source' un uzunluğu büyük veya eşitse (>=) totalwidth' e hiçbir şey yapılmaz. 
+*/
+void str_padright_inplace(char * source, const size_t totalwidth, const char pdchr)
 {
 	const size_t source_len = strlen(source);
 	if (source_len >= totalwidth) return;
-	memset(source + source_len +1, pdchr, totalwidth - (source_len - 1));
-	source[totalwidth - 1] = '\0';
+	memset(source + source_len, pdchr, totalwidth - source_len);
+	source[totalwidth] = '\0';
 }
 /*
  * @param			{const char * source}			source			kaynak char dizi adresi
@@ -309,12 +338,20 @@ char *str_substring(const char *source, const size_t start_index, const size_t l
 	nstr[size] = '\0';
 	return  nstr;
 }
-
+/*
+ * @param		{const char * source}		içeriği büyük harfe çevrilecek olan karakter dizisi adresi
+ * @description	source ile gelen karakter dizisinin içerisindeki karakterleri büyük harfe çevirir.
+ * @returns		başarılı olması durumunda yeni bir karakter dizisi adresi. Başarısızlık durumunda NULL pointer
+ */
 char * str_toupper(const char * source)
 {
 	return toupper_or_tolower(source, 2);
 }
-
+/*
+* @param		{const char * source}		içeriği küçük harfe çevrilecek olan karakter dizisi adresi
+* @description	source ile gelen karakter dizisinin içerisindeki karakterleri büyük harfe çevirir.
+* @returns		başarılı olması durumunda yeni bir karakter dizisi adresi. Başarısızlık durumunda NULL pointer
+*/
 char * str_tolower(const char * source)
  {
 	 return toupper_or_tolower(source, 1);
@@ -335,6 +372,9 @@ static char * toupper_or_tolower(const char * source, const size_t lou)
 	 nstr[source_len] = '\0';
 	 return nstr;
  }
+
+/*								END CHAR										*/
+
 
 
 /*
@@ -460,24 +500,21 @@ int *int_removeall(const int *source, const struct condition condition, const si
   *	@returns		Aranan değer bulunması durumunda ilk bulduğu değer hariçindeki diğer tüm elemanları dinamik oluşturulan int dizisi adresinde geriye döner. 
   *	Aranan değerin bulunmaması durumunda geriye kaynak int dizisinin adresini bellek yetersiz olduğu durumda ise NULL pointer.
   */
-int * int_remove(const int *source, const size_t source_size, const int rvalue, size_t *return_size)
+int *int_remove(const int *source, const size_t source_size, const int rvalue, size_t *return_size)
  {
 	 size_t k = 0;
 	 for (; k < source_size && source[k] != rvalue; ++k);
 
-	 if (k == source_size)
-	 {
+	 if (k == source_size) {
 		 *return_size = source_size;
 		 return (int*)source;
 	 }
-
 	 *return_size = source_size - 1;
-
 	 int *narray = NULL;
-	 if ((narray = (int*)malloc((source_size - 1) * sizeof(int))) == NULL) return NULL;
+	 if ((narray = (int*)malloc((*return_size) * sizeof(int))) == NULL) return NULL;	 
 	 
 	 memcpy(narray, source , k * sizeof(int));
-	 memcpy(narray + k, source + k + 1, (*return_size - k) * sizeof(int));
+	 memcpy(narray + k, source + k , (*return_size - k) * sizeof(int));
 	 
 	 return narray;
  }

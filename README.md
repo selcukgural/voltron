@@ -1,5 +1,5 @@
 # voltron
-C dilinde kendimi geliştirebilmek adına yaptığım yaparken de C# dan esinlendiğim çalışmam...
+C dilinde kendimi geliştirebilmek adına yaptığım yaparken de C# dan esinlendiğim bir helper kütüphanesi
 
 
 ## str_startswith

@@ -1,10 +1,12 @@
 ﻿#pragma  warning(disable:4996)
 #include <stdlib.h>
-#include "str_test.h"
+#include "vtest.h"
+
 
 int main() {
 	
-	str_run_tests();
+	run_all_str_tests();
+	run_all_int_tests();
 
 	system("pause");
 	return 0;

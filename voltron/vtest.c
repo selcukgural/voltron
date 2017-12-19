@@ -1,7 +1,7 @@
 ﻿#include <stdlib.h>
 #include "voltron.h"
 #include "vassert.h"
-#include "str_test.h"
+#include "vtest.h"
 
 
 static void str_endswith_test(void);
@@ -20,8 +20,11 @@ static void str_toupper_test(void);
 static void str_padleft_inplace_test(void);
 static void str_padright_inplace_test(void);
 
+static void int_removeall_test(void);
+static void int_remove_test(void);
 
-void str_run_tests(void)
+
+void run_all_str_tests(void)
 {
 	str_trim_test();	
 	str_trimstart_test();
@@ -39,6 +42,13 @@ void str_run_tests(void)
 	str_padleft_inplace_test();
 	str_padright_inplace_test();
 }
+void run_all_int_tests(void)
+{
+	int_removeall_test();
+	int_remove_test();
+}
+
+
 
 
 
@@ -231,4 +241,61 @@ void str_padright_inplace_test(void)
 	char str5[9] = "Manowar";
 	str_padright_inplace(str5, (size_t)8, (const char)'#');
 	assert_equal_str(str5, "Manowar#", __LINE__,"str_padright_inplace");
+}
+
+void int_removeall_test(void)
+{
+	int source[] = { 1,2,3,1,2,5,6,5,8,9,6,56,2,54,87,545,87,456,48,5,845,-54,8489,-5425,-596,2152,64,12,5663,2,1,5,-54,2563,2541,23,655,84,256,5441,210,4,-4 };
+	struct condition con;
+	con.predicate = LESS_THAN;
+	con.predicate_value = 3;
+	size_t return_size;
+	int *result = int_removeall(source, &con, 43, &return_size);
+	for(size_t k = 0; k < return_size;++k) {
+		assert_condition_int(result[k], con, __LINE__, "int_removeall_test");
+	}
+
+	con.predicate = NOT_EQUAL;
+	con.predicate_value = 2;
+	return_size = 0;
+	result = int_removeall(source, &con, 43, &return_size);
+	for (size_t k = 0; k < return_size; ++k) {
+		assert_condition_int(result[k], con, __LINE__, "int_removeall_test");
+	}
+
+	con.predicate = GREATER;
+	con.predicate_value = 64;
+	return_size = 0;
+	result = int_removeall(source, &con, 43, &return_size);
+	for (size_t k = 0; k < return_size; ++k) {
+		assert_condition_int(result[k], con, __LINE__, "int_removeall_test");
+	}
+
+	con.predicate = GREATER_THAN_EQUAL;
+	con.predicate_value = -54;
+	return_size = 0;
+	result = int_removeall(source, &con, 43, &return_size);
+	for (size_t k = 0; k < return_size; ++k) {
+		assert_condition_int(result[k], con, __LINE__, "int_removeall_test");
+	}
+
+
+	con.predicate = LESS_THAN_OR_EQUAL;
+	con.predicate_value = 5663;
+	return_size = 0;
+	result = int_removeall(source, &con, 43, &return_size);
+	for (size_t k = 0; k < return_size; ++k) {
+		assert_condition_int(result[k], con, __LINE__, "int_removeall_test");
+	}
+
+	free(result);
+}
+
+void int_remove_test()
+{
+	int source[] = { 1,2,3,1,2,5,6,5,8,9,6,56,2,54,87,545,87,456,48,5,845,-54,8489,-5425,-596,2152,64,12,5663,2,1,5,-54,2563,2541,23,655,84,256,5441,210,4,-4 };
+	size_t return_size;
+	int *result = int_remove(source, 43, 5, &return_size);
+	assert_equal_int(42,(int)return_size , __LINE__, "int_remove_test");	
+	free(result);
 }

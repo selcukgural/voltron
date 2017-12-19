@@ -1,8 +1,6 @@
 #ifndef VOLTRON_INCLUDE
 #define VOLTRON_INCLUDE
 
-#include <stddef.h>
-
 #define  ASIZE(x)		(sizeof((x)) / sizeof((x)[0]))
 
 enum predicate  {
@@ -34,6 +32,7 @@ char *str_substring(const char *source, const size_t start_index, const size_t l
 char *str_toupper(const char *source);
 char *str_tolower(const char *source);
 
-int *int_removeall(const int *source, const struct condition condition, const size_t source_size, size_t *return_size);
+
+int *int_removeall(const int *source, const struct condition *condition, const size_t source_size, size_t *return_size);
 int *int_remove(const int *source, const size_t source_size, const int rvalue, size_t *return_size);
 #endif

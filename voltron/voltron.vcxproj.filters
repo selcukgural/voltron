@@ -21,10 +21,10 @@
     <ClInclude Include="vassert.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="str_test.h">
+    <ClInclude Include="voltron.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="voltron.h">
+    <ClInclude Include="vtest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,11 +35,11 @@
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="str_test.c">
-      <Filter>Source Files\tests</Filter>
-    </ClCompile>
     <ClCompile Include="voltron.c">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vtest.c">
+      <Filter>Source Files\tests</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

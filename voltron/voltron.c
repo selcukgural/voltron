@@ -1,10 +1,8 @@
 ﻿#pragma warning(disable:4996)
-#include "voltron.h"
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
-
-
+#include "voltron.h"
 
 
 /*								START CHAR										*/
@@ -377,6 +375,7 @@ static char * toupper_or_tolower(const char * source, const size_t lou)
 
 
 
+/*								START INT										*/
 /*
  *	@param			{const int *source}					source			Arama yapılacak olan int dizisinin adresi
  *  @param			{const struct condition condition}	condition		Arama yapılacak kriter
@@ -386,16 +385,16 @@ static char * toupper_or_tolower(const char * source, const size_t lou)
  *	@returns		Kritlere uygun aranan tüm değerleri çıkararak dinamik oluşturulan yeni int dizisi adresinde geriye döner.
  *	Aranan değerin bulunmaması durumunda geriye kaynak int dizisinin adresini bellek yetersiz olduğu durumda ise NULL pointer.
  */
-int *int_removeall(const int *source, const struct condition condition, const size_t source_size, size_t *return_size)
+int *int_removeall(const int *source, const struct condition *condition, const size_t source_size, size_t *return_size)
  {
 	 size_t counter = 0;
 	 size_t temp = 0;
 	 int *narray = NULL;
 
-	 switch (condition.predicate) {
+	 switch ((*condition).predicate) {
 	 case LESS_THAN:
 		 for (size_t k = 0; k < source_size; ++k)
-			 if (source[k] < condition.predicate_value)
+			 if (source[k] < condition->predicate_value)
 				 ++counter;
 
 		 if (counter == 0) return  (int*)source;
@@ -406,7 +405,7 @@ int *int_removeall(const int *source, const struct condition condition, const si
 		 counter = 0;
 
 		 for (size_t k = 0; k < source_size; ++k) {
-			 if (source[k] < condition.predicate_value) {
+			 if (source[k] < condition->predicate_value) {
 				 narray[counter++] = source[k];
 				 if (temp == counter) break;
 			 }
@@ -414,7 +413,7 @@ int *int_removeall(const int *source, const struct condition condition, const si
 		 return narray;
 	 case LESS_THAN_OR_EQUAL:
 		 for (size_t k = 0; k < source_size; ++k)
-			 if (source[k] <= condition.predicate_value)
+			 if (source[k] <= condition->predicate_value)
 				 ++counter;
 
 		 if (counter == 0) return  (int*)source;
@@ -425,7 +424,7 @@ int *int_removeall(const int *source, const struct condition condition, const si
 		 counter = 0;
 
 		 for (size_t k = 0; k < source_size; ++k) {
-			 if (source[k] <= condition.predicate_value) {
+			 if (source[k] <= condition->predicate_value) {
 				 narray[counter++] = source[k];
 				 if (temp == counter) break;
 			 }
@@ -433,7 +432,7 @@ int *int_removeall(const int *source, const struct condition condition, const si
 		 return narray;
 	 case GREATER:
 		 for (size_t k = 0; k < source_size; ++k)
-			 if (source[k] > condition.predicate_value)
+			 if (source[k] >(*condition).predicate_value)
 				 ++counter;
 
 		 if (counter == 0) return  (int*)source;
@@ -444,7 +443,7 @@ int *int_removeall(const int *source, const struct condition condition, const si
 		 counter = 0;
 
 		 for (size_t k = 0; k < source_size; ++k) {
-			 if (source[k] > condition.predicate_value) {
+			 if (source[k] > condition->predicate_value) {
 				 narray[counter++] = source[k];
 				 if (temp == counter) break;
 			 }
@@ -452,7 +451,7 @@ int *int_removeall(const int *source, const struct condition condition, const si
 		 return narray;
 	 case GREATER_THAN_EQUAL:
 		 for (size_t k = 0; k < source_size; ++k)
-			 if (source[k] >= condition.predicate_value)
+			 if (source[k] >= condition->predicate_value)
 				 ++counter;
 
 		 if (counter == 0) return  (int*)source;
@@ -463,7 +462,7 @@ int *int_removeall(const int *source, const struct condition condition, const si
 		 counter = 0;
 
 		 for (size_t k = 0; k < source_size; ++k) {
-			 if (source[k] >= condition.predicate_value) {
+			 if (source[k] >= condition->predicate_value) {
 				 narray[counter++] = source[k];
 				 if (temp == counter) break;
 			 }
@@ -471,7 +470,7 @@ int *int_removeall(const int *source, const struct condition condition, const si
 		 return narray;
 	 case NOT_EQUAL:
 		 for (size_t k = 0; k < source_size; ++k)
-			 if (source[k] != condition.predicate_value)
+			 if (source[k] != condition->predicate_value)
 				 ++counter;
 
 		 if (counter == 0) return  (int*)source;
@@ -481,7 +480,7 @@ int *int_removeall(const int *source, const struct condition condition, const si
 		 counter = 0;
 
 		 for (size_t k = 0; k < source_size; ++k) {
-			 if (source[k] != condition.predicate_value) {
+			 if (source[k] != condition->predicate_value) {
 				 narray[counter++] = source[k];
 				 if (temp == counter) break;
 			 }
@@ -518,3 +517,5 @@ int *int_remove(const int *source, const size_t source_size, const int rvalue, s
 	 
 	 return narray;
  }
+/*								END INT										*/
+

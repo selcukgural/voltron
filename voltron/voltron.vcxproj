@@ -111,13 +111,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="str_test.h" />
+    <ClInclude Include="vtest.h" />
     <ClInclude Include="voltron.h" />
     <ClInclude Include="vassert.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c" />
-    <ClCompile Include="str_test.c" />
+    <ClCompile Include="vtest.c" />
     <ClCompile Include="vassert.c" />
     <ClCompile Include="voltron.c" />
   </ItemGroup>
